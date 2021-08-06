@@ -1,8 +1,8 @@
-import 'dart:ui';
-
+import 'package:clima_flutter/screens/location_screen.dart';
 import 'package:clima_flutter/services/networking.dart';
 import 'package:flutter/material.dart';
 import 'package:clima_flutter/services/location.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 const apiKey = 'fa8844c341b6c3f01a8d5721d8a03d2a';
 
@@ -21,9 +21,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     getLocationData();
   }
 
-  //API calls
-  void getData() async {}
-
   //geolocation
   void getLocationData() async {
     Location currentLocation = Location();
@@ -37,18 +34,18 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     //await the network helper to get the weather data
     var weatherData = await networkHelper.getData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(locationWeather: weatherData);
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
       body: Center(
-        child: OutlinedButton(
-          onPressed: () {
-            //Get the current location
-          },
-          child: Text('Get Location'),
+        child: SpinKitFadingFour(
+          color: Colors.blue,
+          size: 150.0,
         ),
       ),
     );
