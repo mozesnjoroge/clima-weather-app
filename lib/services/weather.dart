@@ -10,7 +10,7 @@ class WeatherModel {
     await currentLocation.getCurrentLocation();
 
     NetworkHelper networkHelper = NetworkHelper(
-        'openWeatherMapURL?lat={currentLocation.latitude}&lon={currentLocation.longitude}&appid=$apiKey&units=metric');
+        '$openWeatherMapURL?lat=${currentLocation.latitude}&lon=${currentLocation.longitude}&appid=$apiKey&units=metric');
     //await the network helper to get the weather data
     var weatherData = await networkHelper.getData();
     return weatherData;
