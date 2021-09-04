@@ -20,13 +20,20 @@ class _LocationScreenState extends State<LocationScreen> {
   String? weatherDescription;
 
   void updateUI(dynamic weatherData) {
-    setState(() {  
-    temperature = weatherData['main']['temp'];
-    truncatedTemperature = temperature!.toInt();
-    weatherCondition = weatherData['weather'][0]['id'];
-    cityName = weatherData['name'];
-    weatherIcon = weather.getWeatherIcon(weatherCondition!);
-    weatherDescription = weather.getMessage(truncatedTemperature!);
+    setState(() {
+      if (weatherData == null) {
+        truncatedTemperature = 0;
+        weatherDescription = 'Unable to fetch weather details';
+        weatherIcon = 'error';
+        cityName = 'Unavailable';
+        return;
+      }
+      temperature = weatherData['main']['temp'];
+      truncatedTemperature = temperature!.toInt();
+      weatherCondition = weatherData['weather'][0]['id'];
+      cityName = weatherData['name'];
+      weatherIcon = weather.getWeatherIcon(weatherCondition!);
+      weatherDescription = weather.getMessage(truncatedTemperature!);
     });
   }
 
@@ -58,7 +65,10 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async{
+                      var weatherData = await weather.getLocationWeather();
+                      updateUI(weatherData);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,
